@@ -74,13 +74,13 @@
             android:paddingTop="@dimen/md_keylines">
 
             <TextView
+                android:id="@+id/tv_building_location_calendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorAccent"
                 android:text="Calendário do Local"
-                android:textSize="@dimen/article_titles"
-                android:layout_marginBottom="@dimen/md_keylines" />
-
+                android:layout_marginBottom="@dimen/calendar_margin_bottom"
+                android:textSize="@dimen/article_titles" />
 
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:mcv_showOtherDates="all"
-                app:mcv_selectionColor="#00F"
+                app:mcv_selectionColor="#3F51B5"
                 />
 
             <TextView
@@ -96,23 +96,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorAccent"
-                android:text="Data"
-                android:textSize="@dimen/article_titles"
+                android:text="*clique na data para reservar"
+                android:textSize="@dimen/date_caption"
                 android:layout_marginBottom="@dimen/md_keylines" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_reservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="@dimen/md_keylines"
-        android:layout_marginRight="@dimen/md_keylines"
-        app:srcCompat="@drawable/ic_add"
-        android:tint="@color/white"
-        android:visibility="invisible"
-        />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -16,16 +16,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/menu_item_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:tint="@color/button_grey"
-            android:title="One" />
+            android:title="Entrada" />
         <item
-            android:icon="@drawable/ic_favorite_black_24dp"
+            android:id="@+id/menu_item_reservation_history"
+            android:icon="@drawable/ic_history_black_24dp"
             android:tint="@color/button_grey"
-            android:title="Two" />
+            android:title="Histórico de Reservas" />
         <item
+            android:id="@+id/menu_item_bills"
             android:icon="@drawable/ic_bookmark_border_black_24dp"
             android:tint="@color/button_grey"
-            android:title="Three" />
+            android:title="2a Via Boleto" />
     </group>
 </menu>

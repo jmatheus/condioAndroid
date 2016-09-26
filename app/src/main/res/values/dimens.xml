@@ -19,6 +19,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="card_height">204dp</dimen>
     <dimen name="md_keylines">32dp</dimen>
+    <dimen name="md_keylines_smaller">20dp</dimen>
+    <dimen name="md_keylines_smaller_btn">16dp</dimen>
+    <dimen name="calendar_margin_bottom">26dp</dimen>
     <dimen name="padding_recycler_view">12dp</dimen>
     <dimen name="margin_left_bubble">46dp</dimen>
     <dimen name="tile_padding">8dp</dimen>
@@ -32,9 +35,12 @@
     <dimen name="cards_button_width">48dp</dimen>
     <dimen name="cards_button_height">48dp</dimen>
     <dimen name="article_subheading">16sp</dimen>
+    <dimen name="article_text">20sp</dimen>
+    <dimen name="date_caption">14sp</dimen>
     <dimen name="card_image_height">100dp</dimen>
     <dimen name="list_body">14sp</dimen>
     <dimen name="navheader_height">222dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="item_width">200dp</dimen>
 </resources>

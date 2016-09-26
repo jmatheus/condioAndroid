@@ -11,6 +11,15 @@ public class User implements Serializable {
     private String name;
     private String email;
     private String password;
+    private String apartment;
+
+    public String getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(String apartment) {
+        this.apartment = apartment;
+    }
 
     public String getName() {
         return name;

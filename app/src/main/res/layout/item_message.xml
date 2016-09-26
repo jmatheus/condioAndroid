@@ -26,7 +26,7 @@
         android:layout_width="@dimen/avator_size"
         android:layout_height="@dimen/avator_size"
         android:id="@+id/profile_photo"
-        android:src="@drawable/ic_user"
+        android:src="@drawable/ic_user_grey"
         android:scaleType="centerCrop" />
 
     <com.daasuu.bl.BubbleLayout
@@ -41,7 +41,8 @@
         app:bl_cornersRadius="2dp"
         app:bl_strokeWidth="1dp"
         android:layout_toRightOf="@+id/list_avatar"
-        app:bl_bubbleColor="#3F51B5"
+        app:bl_bubbleColor="#3949AB"
+        app:bl_strokeColor="#3F51B5"
         android:id="@+id/bubble_message">
 
         <LinearLayout
@@ -64,6 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
+                android:id="@+id/tv_created_at"
                 android:textAlignment="gravity"
                 android:textColor="#c4c4d4"
                 android:layout_marginTop="6dp"

@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/nav_btn_new_message" android:icon="@drawable/ic_sms_white_24dp" android:title="Enviar"
+        app:showAsAction="ifRoom"/>
+</menu>

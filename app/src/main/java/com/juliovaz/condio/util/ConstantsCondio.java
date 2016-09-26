@@ -22,8 +22,8 @@ public abstract class ConstantsCondio {
 
     //BUILDING_MESSAGE
     public static final String TAG_BUILDING_MESSAGE = "building_message";
-    public static final String TAG_USER_ID = "user_id";
-    public static final String TAG_MESSAGE = "message_description";
+    public static final String TAG_BUILDING_MESSAGE_USER_ID = "user_id";
+    public static final String TAG_BUILDING_MESSAGE_DESCRIPTION = "message_description";
 
     //DEVICE
     public static final String TAG_DEVICE = "device";
@@ -34,7 +34,18 @@ public abstract class ConstantsCondio {
     public static final String TAG_RESERVATION = "reservation";
     public static final String TAG_RESERVATION_USER= "user_id";
     public static final String TAG_RESERVATION_LOCATION= "building_location_id";
+    public static final String TAG_RESERVATION_ID= "reservation_id";
+    public static final String TAG_RESERVATION_STATUS = "status";
 
 
     public static final String TAG_RESERVATION_EVENT_DATE = "event_date";
+
+    public static final int VIEW_PAGER_RESERVATIONS_POSITION = 0;
+    public static final int VIEW_PAGER_BOARD_MESSAGE_POSITION = 1;
+    public static final int VIEW_PAGER_SERVICES_POSITION = 2;
+
+
+    public static final String RESERVATION_ID = "RESERVATION_ID";
+    public static final String BUILDING_LOCATION_ID = "BUILDING_LOCATION_ID";
+    public static final String RESERVATION_HISTORY_FLAG = "RESERVATION_HISTORY_FLAG";
 }

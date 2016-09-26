@@ -4,8 +4,14 @@ package com.juliovaz.condio.decorators;
  * Created by juliovaz on 9/13/16.
  */
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 
@@ -37,9 +43,26 @@ public class EventDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new StyleSpan(Typeface.BOLD));
-        view.addSpan(new RelativeSizeSpan(1.4f));
-        view.addSpan(new DotSpan(color));
+        view.setSelectionDrawable(generateCircleDrawable(Color.parseColor("#F44336")));
+        view.addSpan(new ForegroundColorSpan(Color.WHITE));
+    }
+
+
+    private static Drawable generateCircleDrawable(final int color) {
+
+        int r = 100;
+        float[] outerR = new float[] {r, r, r, r, r, r, r, r};
+
+        RoundRectShape rr = new RoundRectShape(outerR, null, null);
+
+        ShapeDrawable drawable = new ShapeDrawable(rr);
+        drawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                return new LinearGradient(0, 0, 0, 0, color, color, Shader.TileMode.REPEAT);
+            }
+        });
+        return drawable;
     }
 }
 

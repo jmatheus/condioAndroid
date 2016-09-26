@@ -16,16 +16,22 @@
 
 package com.juliovaz.condio.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.juliovaz.condio.R;
+import com.juliovaz.condio.activity.NewMessageActivity;
 import com.juliovaz.condio.adapter.BuildingMessageAdapter;
 import com.juliovaz.condio.model.BuildingMessage;
 import com.juliovaz.condio.network.ApiMethodsManager;
@@ -58,6 +64,24 @@ public class BuildingMessageFragment extends Fragment {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), NewMessageActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_new_message_icon, menu);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
     private void initComponents() {
         getAllBuildingMessages();
     }
@@ -87,7 +111,6 @@ public class BuildingMessageFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println("error");
                 Toast.makeText(BuildingMessageFragment.this.getActivity(), "Error", Toast.LENGTH_SHORT);
             }
 

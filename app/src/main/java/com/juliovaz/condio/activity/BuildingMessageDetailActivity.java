@@ -51,17 +51,15 @@ public class BuildingMessageDetailActivity extends AppCompatActivity {
         String[] places = resources.getStringArray(R.array.places);
         collapsingToolbar.setTitle(places[postion % places.length]);
 
-        String[] placeDetails = resources.getStringArray(R.array.place_details);
         TextView placeDetail = (TextView) findViewById(R.id.message_detail);
         placeDetail.setText(getIntent().getStringExtra("MESSAGE_DESCRIPTION"));
 
-        String[] placeLocations = resources.getStringArray(R.array.place_locations);
         TextView placeLocation =  (TextView) findViewById(R.id.message_date);
         placeLocation.setText(getIntent().getStringExtra("CREATED_AT"));
 
         TypedArray placePictures = resources.obtainTypedArray(R.array.places_picture);
         ImageView placePicutre = (ImageView) findViewById(R.id.image);
-        placePicutre.setImageDrawable(placePictures.getDrawable(postion % placePictures.length()));
+        placePicutre.setImageDrawable(placePictures.getDrawable(postion));
 
         placePictures.recycle();
     }

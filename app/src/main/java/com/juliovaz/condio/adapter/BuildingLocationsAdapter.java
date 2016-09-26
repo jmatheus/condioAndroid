@@ -38,7 +38,6 @@ public class BuildingLocationsAdapter extends RecyclerView.Adapter<BuildingLocat
         for (int i = 0; i < mPlacePictures.length; i++) {
             mPlacePictures[i] = a.getDrawable(i);
         }
-
     }
 
     @Override
@@ -51,7 +50,7 @@ public class BuildingLocationsAdapter extends RecyclerView.Adapter<BuildingLocat
     public void onBindViewHolder(ViewHolder holder, int position) {
         BuildingLocation buildingLocation = listBuildingLocations.get(position);
         if (buildingLocation != null) {
-            holder.picture.setImageDrawable(mPlacePictures[position]);
+            holder.picture.setImageDrawable(mPlacePictures[buildingLocation.getId() - 1]);
             holder.name.setText(buildingLocation.getName());
             holder.description = buildingLocation.getDescription();
             holder.createdAt = buildingLocation.getCreatedAt();
@@ -83,7 +82,6 @@ public class BuildingLocationsAdapter extends RecyclerView.Adapter<BuildingLocat
                 public void onClick(View v) {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, BuildingLocationDetailActivity.class);
-                    intent.putExtra(BuildingLocationDetailActivity.EXTRA_POSITION, getAdapterPosition());
                     intent.putExtra("BUILDING_LOCATION_ID", id);
                     intent.putExtra("BUILDING_LOCATION_NAME", name.getText());
                     intent.putExtra("BUILDING_LOCATION_PLACE_INDEX", id - 1);

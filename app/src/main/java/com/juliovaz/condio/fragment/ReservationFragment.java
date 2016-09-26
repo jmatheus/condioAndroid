@@ -1,17 +1,18 @@
 package com.juliovaz.condio.fragment;
 
-import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.juliovaz.condio.adapter.EventRecyclerViewAdapter;
 import com.juliovaz.condio.R;
-import com.juliovaz.condio.adapter.BuildingLocationsAdapter;
-import com.juliovaz.condio.model.BuildingLocation;
+import com.juliovaz.condio.model.Reservation;
 import com.juliovaz.condio.network.ApiMethodsManager;
 import com.juliovaz.condio.network.ApiService;
 
@@ -22,59 +23,65 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * A placeholder fragment containing a simple view.
+ * A fragment representing a list of Items.
+ * <p/>
+ * interface.
  */
 public class ReservationFragment extends Fragment {
 
+    private ArrayList<Reservation> listReservations;
     private RecyclerView recyclerView;
-    private ArrayList<BuildingLocation> listBuildingLocations;
+    private EventRecyclerViewAdapter eventRecyclerViewAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-        int tilePadding = getResources().getDimensionPixelSize(R.dimen.tile_padding);
-        recyclerView.setPadding(tilePadding, tilePadding, tilePadding, tilePadding);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+    @Override
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_event_list, container, false);
 
-        listBuildingLocations = new ArrayList<>();
+        listReservations = new ArrayList<>();
+
         initComponents();
-
         return recyclerView;
     }
 
-
     private void initComponents() {
-
-        getAllBuildingLocations();
-
+        getReservations();
     }
 
-    private void getAllBuildingLocations() {
-        ApiService service = ApiMethodsManager.getMethodGetService();
-
-
-        service.getAllBuildingLocations(new Callback<ArrayList<BuildingLocation>>() {
+    private void getReservations() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("br.juliovaz.condio.prefs", getActivity().MODE_PRIVATE);
+        String loggedUser = prefs.getString("USER_ID", null);
+        loggedUser = "1";
+        ApiService apiService = ApiMethodsManager.getMethodGetService();
+        apiService.getReservations(loggedUser, new Callback<ArrayList<Reservation>>() {
             @Override
-            public void success(ArrayList<BuildingLocation> buildingLocations, Response response) {
-
+            public void success(ArrayList<Reservation> reservations, Response response) {
                 if (response.getStatus() == 200) {
-                    if (buildingLocations == null) {
-                        listBuildingLocations = new ArrayList<>();
+                    if (reservations == null) {
+                        listReservations = new ArrayList<>();
                     } else {
-                        listBuildingLocations = buildingLocations;
+                        listReservations = reservations;
                     }
 
-                    BuildingLocationsAdapter buildingLocationsAdapter = new BuildingLocationsAdapter(recyclerView.getContext(), listBuildingLocations);
-                    recyclerView.setAdapter(buildingLocationsAdapter);
+                    eventRecyclerViewAdapter = new EventRecyclerViewAdapter(recyclerView.getContext(), listReservations);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
+                    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setAdapter(eventRecyclerViewAdapter);
+
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println("ERROR --------------------------------------// HÁ MALANDRAMENTE");
+                System.out.println("---------------------//");
+                System.out.println(error.getResponse().getStatus());
                 Toast.makeText(ReservationFragment.this.getActivity(), "Error", Toast.LENGTH_SHORT);
+
             }
         });
     }

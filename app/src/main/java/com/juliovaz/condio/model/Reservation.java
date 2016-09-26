@@ -23,6 +23,16 @@ public class Reservation implements Serializable {
     @SerializedName("building_location")
     private BuildingLocation buildingLocation;
 
+    @SerializedName("reservation_name")
+    private String reservationName;
+
+    public String getReservationName() {
+        return reservationName;
+    }
+
+    public void setReservationName(String reservationName) {
+        this.reservationName = reservationName;
+    }
 
     public int getId() {
         return id;

@@ -23,97 +23,11 @@
         <item>Churrasqueira</item>
         <item>Piscina Aquecida</item>
     </string-array>
-    <string-array name="place_desc">
-        <item>Salão de festas localizado próximo a churrasqueira
-        </item>
-        <item>Quadra de tênis com medidas oficiais</item>
-        <item>Quadra poliesportiva para prática de futebol/basquete ou volei.</item>
-        <item>Salão de festas localizado próximo a piscina aquecida.</item>
-        <item>Churrasqueira para festas e eventos</item>
-        <item>Piscina aquecida com com hidromassagem.</item>
-    </string-array>
-    <string-array name="place_details">
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-    </string-array>
-    <string-array name="place_locations">
-        <item>Próximo a churrasqueira</item>
-        <item>Dentro do complexo de quadras</item>
-        <item>Dentro do complexo de quadras</item>
-        <item>Próximo a piscina aquecida</item>
-        <item>Ao lado do Salão de Festas 1</item>
-        <item>Ao lado do Salão de Festas 2</item>
-    </string-array>
-    <array name="place_avator">
-        <item>@drawable/a_avator</item>
-        <item>@drawable/b_avator</item>
-        <item>@drawable/c_avator</item>
-        <item>@drawable/d_avator</item>
-        <item>@drawable/e_avator</item>
-        <item>@drawable/f_avator</item>
-    </array>
-    <array name="message_board_documemt">
-        <item>@drawable/document</item>
-    </array>
     <array name="places_picture">
         <item>@drawable/churrascaria</item>
         <item>@drawable/s_festas</item>
         <item>@drawable/cine_teatro</item>
     </array>
-    <string-array name="messages">
-        <item>Mensagem do sindico 1</item>
-        <item>Mensagem do sindico 2</item>
-        <item>Mensagem do sindico 3</item>
-        <item>Mensagem do sindico 4</item>
-        <item>Mensagem do sindico 5</item>
-    </string-array>
-    <string-array name="messages_description">
-        <item>Detalhes sobre a mensagem 1</item>
-        <item>Detalhes sobre a mensagem 2</item>
-        <item>Detalhes sobre a mensagem 3</item>
-        <item>Detalhes sobre a mensagem 4</item>
-        <item>Detalhes sobre a mensagem 5</item>
-    </string-array>
     <string-array name="orders">
         <item>Encomenda 1</item>
         <item>Encomenda 2</item>

@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -28,34 +33,50 @@ public class NewReservationActivity extends AppCompatActivity {
 
     private int userId, buildingLocationId;
     private String eventDate;
-    private Date reservationDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_reservation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_new_reservation);
         setSupportActionBar(toolbar);
 
         EditText startDateEt = (EditText) findViewById(R.id.input_event_date);
         startDateEt.setText(getIntent().getStringExtra("EVENT_DATE"));
 
-        AppCompatButton button = (AppCompatButton) findViewById(R.id.btn_save_event);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences prefs = getSharedPreferences("br.juliovaz.condio.prefs", MODE_PRIVATE);
-                String loggedUser = prefs.getString("USER_ID", null);
-                loggedUser = "1";
-                if (loggedUser != null) {
-                    userId = Integer.parseInt(loggedUser);
-                    buildingLocationId = getIntent().getIntExtra("BUILDING_LOCATION_ID", 0);
-                    eventDate = getIntent().getStringExtra("EVENT_DATE");
-                    createNewEvent();
-                }
-            }
-        });
+        String locationName = getIntent().getStringExtra("BUILDING_LOCATION_NAME");
+        String eventDate = getIntent().getStringExtra("EVENT_DATE_STRING");
+        String text = getResources().getString(R.string.reservation_text, locationName, eventDate);
+        TextView txReservationText = (TextView) findViewById(R.id.tx_new_reservation);
+        txReservationText.setText(text);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_new_reservation) {
+            SharedPreferences prefs = getSharedPreferences("br.juliovaz.condio.prefs", MODE_PRIVATE);
+            String loggedUser = prefs.getString("USER_ID", null);
+            loggedUser = "1";
+            if (loggedUser != null) {
+                userId = Integer.parseInt(loggedUser);
+                buildingLocationId = getIntent().getIntExtra("BUILDING_LOCATION_ID", 0);
+                eventDate = getIntent().getStringExtra("EVENT_DATE");
+                createNewEvent();
+            }
+        }
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_new_reservation, menu);
+        return true;
     }
 
     private void createNewEvent() {
@@ -75,7 +96,7 @@ public class NewReservationActivity extends AppCompatActivity {
             @Override
             public void success(JsonObject jsonObject, Response response) {
                 if (response.getStatus() == 201) {
-                    Intent intent = new Intent(getApplicationContext(), ReservationActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     Toast.makeText(getApplicationContext(), "Reserva efetuada com sucesso", Toast.LENGTH_LONG).show();
                     startActivity(intent);
                 }
@@ -83,8 +104,8 @@ public class NewReservationActivity extends AppCompatActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println("error");
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                String message = "Não foi possível realizar a reserva. Tente novamente em instantes.";
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }

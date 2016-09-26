@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.juliovaz.condio.R;
@@ -30,13 +29,6 @@ public class BuildingMessageAdapter extends RecyclerView.Adapter<BuildingMessage
     public BuildingMessageAdapter(Context context, ArrayList<BuildingMessage> listBuildingMessages) {
         this.context = context;
         this.listBuildingMessages = listBuildingMessages;
-
-        Resources resources = context.getResources();
-        TypedArray a = resources.obtainTypedArray(R.array.message_board_documemt);
-        mBoardPicture = new Drawable[a.length()];
-        for (int i = 0; i < mBoardPicture.length; i++) {
-            mBoardPicture[i] = a.getDrawable(i);
-        }
     }
 
     @Override
@@ -52,7 +44,7 @@ public class BuildingMessageAdapter extends RecyclerView.Adapter<BuildingMessage
 //            holder.picture.setImageDrawable(mBoardPicture[0]);
             holder.messageTitle.setText(buildingMessage.getMessageDescription());
             holder.messageDescription = buildingMessage.getMessageDescription();
-            holder.createdAt = buildingMessage.getCreatedAt();
+            holder.createdAt.setText(buildingMessage.getCreatedAtFormatted());
         }
     }
 
@@ -63,30 +55,16 @@ public class BuildingMessageAdapter extends RecyclerView.Adapter<BuildingMessage
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        // each data item is just a string in this case
-        public ImageView picture;
         public TextView messageTitle;
+        public TextView createdAt;
         public String messageDescription;
-        public String createdAt;
 
         public ViewHolder(View itemView) {
             super(itemView);
-//
+
 //            picture = (TextView) itemView.findViewById(R.id.profile_photo);
             messageTitle = (TextView) itemView.findViewById(R.id.message_text);
-//            messageDescription = (DTextView) itemView.findViewById(R.id.card_text);
-//            messageDescription = (DÎTextView) itemView.findViewById(R.id.card_text);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, BuildingMessageDetailActivity.class);
-                    intent.putExtra("MESSAGE_DESCRIPTION", messageDescription);
-                    intent.putExtra("CREATED_AT", createdAt);
-                    intent.putExtra(BuildingMessageDetailActivity.EXTRA_POSITION, getAdapterPosition());
-                    context.startActivity(intent);
-                }
-            });
+            createdAt = (TextView) itemView.findViewById(R.id.tv_created_at);
         }
     }
 }

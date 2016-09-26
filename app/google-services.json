@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "822979412849",
+    "firebase_url": "https://condio-1290.firebaseio.com",
+    "project_id": "condio-1290",
+    "storage_bucket": "condio-1290.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822979412849:android:76273fddde699237",
+        "android_client_info": {
+          "package_name": "com.juliovaz.condio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822979412849-v1i7660k83sf93bnn0gfhud9dsh8dqkt.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "822979412849-vi16tmukfsb0oba38mii5udhaltpfosq.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "822979412849-gl0evc51u9l2qnhp6dar191p4lgdl2g8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwLpbJqOTvPNlw1_KScMnb8Ob1SOy7cWM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

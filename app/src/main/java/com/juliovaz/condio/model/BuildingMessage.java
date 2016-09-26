@@ -3,6 +3,9 @@ package com.juliovaz.condio.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by julio on 07/05/16.
@@ -50,6 +53,20 @@ public class BuildingMessage implements Serializable {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public String getCreatedAtFormatted() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, HH:mm");
+        SimpleDateFormat sdfDecode = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String createdAtFormatted = this.createdAt;
+        try {
+            Date createdAtDate = sdfDecode.parse(this.createdAt);
+            createdAtFormatted = sdf.format(createdAtDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return createdAtFormatted;
     }
 }
 

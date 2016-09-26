@@ -16,11 +16,11 @@
 
 package com.juliovaz.condio.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -29,11 +29,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.juliovaz.condio.R;
 import com.juliovaz.condio.decorators.EventDecorator;
 import com.juliovaz.condio.decorators.HighlightWeekendsDecorator;
+import com.juliovaz.condio.decorators.UnavailableDateDecorator;
 import com.juliovaz.condio.model.BuildingLocation;
 import com.juliovaz.condio.network.ApiMethodsManager;
 import com.juliovaz.condio.network.ApiService;
@@ -56,9 +57,8 @@ import retrofit.client.Response;
  */
 public class BuildingLocationDetailActivity extends AppCompatActivity implements OnDateSelectedListener {
 
-    public static final String EXTRA_POSITION = "position";
     private MaterialCalendarView materialCalendar;
-    CollapsingToolbarLayout collapsingToolbar;
+    private ArrayList<CalendarDay> reservedDates;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,9 +72,7 @@ public class BuildingLocationDetailActivity extends AppCompatActivity implements
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
-        int postion = getIntent().getIntExtra(EXTRA_POSITION, 0);
         Resources resources = getResources();
-        String[] places = resources.getStringArray(R.array.places);
         collapsingToolbar.setTitle(getIntent().getStringExtra("BUILDING_LOCATION_NAME"));
 
         TypedArray placePictures = resources.obtainTypedArray(R.array.places_picture);
@@ -83,19 +81,6 @@ public class BuildingLocationDetailActivity extends AppCompatActivity implements
 
         materialCalendar.setOnDateChangedListener(this);
         materialCalendar.addDecorators(new HighlightWeekendsDecorator());
-
-        // Adding Floating Action Button to bottom right of main view
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_reservation);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                Intent intent = new Intent(context, NewReservationActivity.class);
-                intent.putExtra("EVENT_DATE", getSelectedDate());
-                intent.putExtra("BUILDING_LOCATION_ID", getIntent().getIntExtra("BUILDING_LOCATION_ID", 0));
-                context.startActivity(intent);
-            }
-        });
 
         placePictures.recycle();
 
@@ -111,12 +96,29 @@ public class BuildingLocationDetailActivity extends AppCompatActivity implements
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
-        TextView textView = (TextView) findViewById(R.id.text_view_date);
-        textView.setText(getSelectedDatesString());
+        CalendarDay day = materialCalendar.getSelectedDate();
+        Calendar cal = Calendar.getInstance();
+        CalendarDay currentDay = CalendarDay.from(cal);
 
-        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.fab_reservation);
-        button.setVisibility(View.VISIBLE);
+        boolean validDay = currentDay.isAfter(day);
+
+        if (reservedDates != null) {
+            boolean contains = reservedDates.contains(day);
+            if (validDay || contains) {
+                String message = "Essa data está indisponível, por favor selecione outra.";
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            } else {
+
+                Intent intent = new Intent(this, NewReservationActivity.class);
+                intent.putExtra("EVENT_DATE", getSelectedDate());
+                intent.putExtra("EVENT_DATE_STRING", getSelectedDatesString());
+                intent.putExtra("BUILDING_LOCATION_ID", getIntent().getIntExtra("BUILDING_LOCATION_ID", 0));
+                intent.putExtra("BUILDING_LOCATION_NAME", getIntent().getStringExtra("BUILDING_LOCATION_NAME"));
+                startActivity(intent);
+            }
+        }
     }
+
 
     private String getSelectedDatesString() {
         CalendarDay date = materialCalendar.getSelectedDate();
@@ -163,24 +165,25 @@ public class BuildingLocationDetailActivity extends AppCompatActivity implements
             @Override
             public void success(ArrayList<String> dates, Response response) {
                 Calendar cal = Calendar.getInstance();
-                ArrayList<CalendarDay> calendarDays = new ArrayList<>();
+                reservedDates  = new ArrayList<>();
                 for (String date: dates) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     try {
                         cal.setTime(sdf.parse(date));
                         CalendarDay day = CalendarDay.from(cal);
-                        calendarDays.add(day);
+                        reservedDates.add(day);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
 
-                materialCalendar.addDecorator(new EventDecorator(Color.RED, calendarDays));
+                materialCalendar.addDecorator(new EventDecorator(Color.RED, reservedDates));
             }
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println(error);
+                String message = "Ocorreu um pequeno erro ao recuperar as datas. Tente novamente em instantes por favor!";
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
             }
         });
 

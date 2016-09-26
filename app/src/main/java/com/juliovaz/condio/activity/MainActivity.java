@@ -16,16 +16,23 @@
 
 package com.juliovaz.condio.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -33,14 +40,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.juliovaz.condio.Manifest;
 import com.juliovaz.condio.R;
 import com.juliovaz.condio.fragment.BuildingMessageFragment;
-import com.juliovaz.condio.fragment.EventFragment;
-import com.juliovaz.condio.fragment.ListContentFragment;
+import com.juliovaz.condio.fragment.ReservationFragment;
+import com.juliovaz.condio.network.gcm.QuickstartPreferences;
+import com.juliovaz.condio.network.gcm.RegistrationIntentService;
+import com.juliovaz.condio.util.ConstantsCondio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +66,14 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     private FloatingActionButton fab;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private boolean isReceiverRegistered;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private ViewPager viewPager;
+    private static int WRITE_STORAGE_PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.btn_new_reservation);
         // Setting ViewPager for each Tabs
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         // Create Navigation drawer and inlfate layout
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         // Adding menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
@@ -89,6 +110,25 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // Set item in checked state
                         menuItem.setChecked(true);
+                        Context context = navigationView.getContext();
+                        Intent intent;
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_item_home:
+                                intent = new Intent(context, MainActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            case R.id.menu_item_reservation_history:
+                                intent = new Intent(context, ReservationHistoryActivity.class);
+                                context.startActivity(intent);
+                                fab.hide();
+                                break;
+                            case R.id.menu_item_bills:
+                                intent = new Intent(context, BillActivity.class);
+                                context.startActivity(intent);
+                                break;
+                            default:
+                                break;
+                        }
 
                         // Closing drawer on item click
                         mDrawerLayout.closeDrawers();
@@ -106,14 +146,116 @@ public class MainActivity extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
+
+        initGcm();
+
+        viewPagerPosition();
+
+        if (!isStoragePermissionGranted()) {
+            Toast.makeText(this, "O App não irá funcionar direito sem essa permissão!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
+    }
+
+    private void viewPagerPosition() {
+        int position = getIntent().getIntExtra("fragment_name", 0);
+        viewPager.setCurrentItem(position);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        isReceiverRegistered = false;
+        super.onPause();
+    }
+
+    private void initGcm() {
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+            }
+        };
+
+        // Registering BroadcastReceiver
+        registerReceiver();
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+            isReceiverRegistered = true;
+        }
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "Dispositivo não suportado para a PlayServices");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new EventFragment(), "Reservas");
+        adapter.addFragment(new ReservationFragment(), "Reservas");
         adapter.addFragment(new BuildingMessageFragment(), "Mural de Avisos");
-        adapter.addFragment(new ListContentFragment(), "Serviços");
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -124,13 +266,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0:
+                    case ConstantsCondio.VIEW_PAGER_RESERVATIONS_POSITION:
                         fab.show();
                         break;
-                    case 1:
+                    case ConstantsCondio.VIEW_PAGER_BOARD_MESSAGE_POSITION:
                         fab.hide();
                         break;
-                    case 2:
+                    case ConstantsCondio.VIEW_PAGER_SERVICES_POSITION:
                         fab.hide();
                         break;
                     default:
@@ -179,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
