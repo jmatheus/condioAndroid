@@ -15,7 +15,6 @@ import com.juliovaz.condio.R;
  */
 public class NewMessageActivityFragment extends Fragment {
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

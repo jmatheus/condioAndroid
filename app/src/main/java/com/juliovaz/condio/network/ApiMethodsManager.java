@@ -22,7 +22,7 @@ public abstract class ApiMethodsManager {
         };
 
         RestAdapter retrofit = new RestAdapter.Builder()
-                .setEndpoint("http://condio.herokuapp.com")
+                .setEndpoint("http://condio-web.herokuapp.com")
                 .setRequestInterceptor(requestInterceptor)
                 .build();
 

@@ -28,18 +28,31 @@
         <item>@drawable/s_festas</item>
         <item>@drawable/cine_teatro</item>
     </array>
+    <array name="place_avator">
+        <item>@drawable/extintor</item>
+        <item>@drawable/piscina_interna</item>
+        <item>@drawable/dedetizacao</item>
+        <item>@drawable/vale_transporte</item>
+        <item>@drawable/folha_ponto</item>
+        <item>@drawable/folha_ponto</item>
+        <item>@drawable/assembleia</item>
+    </array>
     <string-array name="orders">
-        <item>Encomenda 1</item>
-        <item>Encomenda 2</item>
-        <item>Encomenda 3</item>
-        <item>Encomenda 4</item>
-        <item>Encomenda 5</item>
+        <item>Extintor 4 andar</item>
+        <item>Piscina Interna - Limpeza</item>
+        <item>Dedetização</item>
+        <item>Boleto VT Funcionários</item>
+        <item>Assinar Folhas de Ponto</item>
+        <item>Fechamento e Coleta do Relógio de Ponto</item>
+        <item>Assembléia</item>
     </string-array>
     <string-array name="orders_detail">
-        <item>Encomenda 1 entregue no dia 27/05/2016</item>
-        <item>Encomenda 2 entregue no dia 30/04/2016</item>
-        <item>Encomenda 3 entregue no dia 02/03/2016</item>
-        <item>Encomenda 4 entregue no dia 01/03/2016</item>
-        <item>Encomenda 5 entregue no dia 15/01/2016</item>
+        <item>Agendada para o dia 27/10/2016</item>
+        <item>Agendada para o dia 30/10/2016</item>
+        <item>Agendada para o dia 2/11/2016</item>
+        <item>Agendada para o dia 16/11/2016</item>
+        <item>Agendada para o dia 20/11/2016</item>
+        <item>Agendada para o dia 10/12/2016</item>
+        <item>Agendada para o dia 07/01/2017</item>
     </string-array>
 </resources>

@@ -1,3 +1,7 @@
+package com.juliovaz.condio.fragment;
+
+import android.support.v4.app.Fragment;
+
 /*
  * Copyright (C) 2015 The Android Open Source Project
  *
@@ -14,26 +18,24 @@
  * limitations under the License.
  */
 
-package com.juliovaz.condio.fragment;
-
-import android.content.Intent;
+import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.juliovaz.condio.R;
-import com.juliovaz.condio.activity.NewMessageActivity;
 import com.juliovaz.condio.adapter.BuildingMessageAdapter;
-import com.juliovaz.condio.model.BuildingMessage;
+import com.juliovaz.condio.adapter.ProductMaintenaceAdapter;
+import com.juliovaz.condio.model.Product;
 import com.juliovaz.condio.network.ApiMethodsManager;
 import com.juliovaz.condio.network.ApiService;
 
@@ -44,65 +46,57 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Provides UI for the view with Cards.
+ * Created by juliovaz on 9/29/16.
  */
-public class BuildingMessageFragment extends Fragment {
+public class ProductMaintenanceFragment extends Fragment {
 
-    private ArrayList<BuildingMessage> listBuildingMessages;
+    private ArrayList<Product> listMaintenance;
     private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) inflater.inflate(
+       recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
 
-        listBuildingMessages = new ArrayList<>();
+        listMaintenance = new ArrayList<>();
         initComponents();
-
+        
         return recyclerView;
-
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
     }
 
     private void initComponents() {
-        getAllBuildingMessages();
+        getProducts();
     }
 
-    private void getAllBuildingMessages() {
-
+    private void getProducts() {
         ApiService service = ApiMethodsManager.getMethodGetService();
 
 
-        service.getAllBuildingMessages(new Callback<ArrayList<BuildingMessage>>() {
+        service.getProducts(new Callback<ArrayList<Product>>() {
             @Override
-            public void success(ArrayList<BuildingMessage> buildingMessages, Response response) {
-
+            public void success(ArrayList<Product> products, Response response) {
                 if (response.getStatus() == 200) {
-                    if (buildingMessages == null) {
-                        listBuildingMessages = new ArrayList<>();
+                    if (products== null) {
+                        listMaintenance = new ArrayList<>();
                     } else {
-                        listBuildingMessages = buildingMessages;
+                        listMaintenance = products;
                     }
 
-                    BuildingMessageAdapter messageBoardAdapter = new BuildingMessageAdapter(recyclerView.getContext(), listBuildingMessages);
-                    recyclerView.setAdapter(messageBoardAdapter);
+                    ProductMaintenaceAdapter productMaintenaceAdapter = new ProductMaintenaceAdapter(recyclerView.getContext(), listMaintenance);
+                    recyclerView.setAdapter(productMaintenaceAdapter);
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 }
+
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(BuildingMessageFragment.this.getActivity(), "Error", Toast.LENGTH_SHORT);
+                Toast.makeText(ProductMaintenanceFragment.this.getActivity(), "Erro de conexão com o servidor", Toast.LENGTH_SHORT);
             }
 
         });
-
     }
 }
+

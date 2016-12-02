@@ -48,4 +48,5 @@
         é o horário padrão do condomínio de acordo com o livro de regras do condomínio. Apertando "Reservar",
         você estará concordando com a política de reservas do seu condomínio.</string>
     <string name="title_activity_bill">2a Via de Boleto</string>
+    <string name="title_activity_product_maintenance">Manutenção Preventiva</string>
 </resources>

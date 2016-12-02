@@ -41,31 +41,6 @@ public class NewMessageActivity extends AppCompatActivity {
         etMessageDescription = (EditText) findViewById(R.id.et_message_text);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_message, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.action_new_message) {
-            SharedPreferences prefs = getSharedPreferences("br.juliovaz.condio.prefs", MODE_PRIVATE);
-            String loggedUser = prefs.getString("USER_ID", null);
-            loggedUser = "1";
-            if (loggedUser != null) {
-                userId = Integer.parseInt(loggedUser);
-                messageDescription = etMessageDescription.getText().toString();
-                createNewMessage();
-            }
-        }
-
-
-        return true;
-    }
-
     private void createNewMessage() {
         ApiService service = ApiMethodsManager.getMethodGetService();
 

@@ -4,6 +4,7 @@ import com.juliovaz.condio.model.Bill;
 import com.juliovaz.condio.model.BuildingLocation;
 import com.juliovaz.condio.model.BuildingMessage;
 import com.juliovaz.condio.model.Device;
+import com.juliovaz.condio.model.Product;
 import com.juliovaz.condio.model.Reservation;
 import com.juliovaz.condio.model.User;
 import com.google.gson.JsonObject;
@@ -30,7 +31,7 @@ public interface ApiService {
     @GET("/users/{id}/bills")
     void getBills(@Path("id") String userId, Callback<ArrayList<Bill>> callback);
 
-    @GET("/building_messages")
+    @GET("/building_messages_json")
     void getAllBuildingMessages(Callback<ArrayList<BuildingMessage>> callback);
 
     @POST("/building_messages")
@@ -65,4 +66,7 @@ public interface ApiService {
 
     @GET("/building_locations/{id}")
     void getBuildingLocation(@Path("id") String locationId, Callback<BuildingLocation> callback);
+
+    @GET("/products_json")
+    void getProducts(Callback<ArrayList<Product>> callback);
 }

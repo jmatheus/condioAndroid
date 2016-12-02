@@ -55,7 +55,7 @@ public class ReservationFragment extends Fragment {
     private void getReservations() {
         SharedPreferences prefs = getActivity().getSharedPreferences("br.juliovaz.condio.prefs", getActivity().MODE_PRIVATE);
         String loggedUser = prefs.getString("USER_ID", null);
-        loggedUser = "1";
+        loggedUser = "2";
         ApiService apiService = ApiMethodsManager.getMethodGetService();
         apiService.getReservations(loggedUser, new Callback<ArrayList<Reservation>>() {
             @Override

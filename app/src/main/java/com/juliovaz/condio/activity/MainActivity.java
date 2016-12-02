@@ -52,6 +52,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.juliovaz.condio.Manifest;
 import com.juliovaz.condio.R;
 import com.juliovaz.condio.fragment.BuildingMessageFragment;
+import com.juliovaz.condio.fragment.ProductMaintenanceFragment;
 import com.juliovaz.condio.fragment.ReservationFragment;
 import com.juliovaz.condio.network.gcm.QuickstartPreferences;
 import com.juliovaz.condio.network.gcm.RegistrationIntentService;

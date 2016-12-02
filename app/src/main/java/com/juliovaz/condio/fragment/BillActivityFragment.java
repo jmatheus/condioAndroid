@@ -55,7 +55,7 @@ public class BillActivityFragment extends Fragment {
     public void getBills() {
         SharedPreferences prefs = getActivity().getSharedPreferences("br.juliovaz.condio.prefs", getActivity().MODE_PRIVATE);
         String loggedUser = prefs.getString("USER_ID", null);
-        loggedUser = "1";
+        loggedUser = "2";
         ApiService apiService = ApiMethodsManager.getMethodGetService();
         apiService.getBills(loggedUser, new Callback<ArrayList<Bill>>() {
             @Override

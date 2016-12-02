@@ -60,7 +60,7 @@ public class NewReservationActivity extends AppCompatActivity {
         if (id == R.id.action_new_reservation) {
             SharedPreferences prefs = getSharedPreferences("br.juliovaz.condio.prefs", MODE_PRIVATE);
             String loggedUser = prefs.getString("USER_ID", null);
-            loggedUser = "1";
+            loggedUser = "2";
             if (loggedUser != null) {
                 userId = Integer.parseInt(loggedUser);
                 buildingLocationId = getIntent().getIntExtra("BUILDING_LOCATION_ID", 0);
